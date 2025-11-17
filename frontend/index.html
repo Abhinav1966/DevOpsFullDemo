@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>DevOps Hands-on — ML Demo</title>
+</head>
+<body>
+<h2>Simple ML Classifier (Breast Cancer)</h2>
+<p>Enter comma-separated feature values (first N features for quick demo):</p>
+<textarea id="features" rows="3" cols="60">14.2,14.0,90.0,600.0,0.1</textarea><br/>
+<button id="btn">Predict</button>
+<pre id="out"></pre>
+
+<script>
+document.getElementById('btn').onclick = async () => {
+  const featuresText = document.getElementById('features').value;
+  const features = featuresText.split(',').map(x=>parseFloat(x.trim()));
+  const res = await fetch('/api/predict', {
+    method:'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({features})
+  });
+  const data = await res.json();
+  document.getElementById('out').innerText = JSON.stringify(data, null, 2);
+};
+</script>
+</body>
+</html>
